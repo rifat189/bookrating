@@ -3,7 +3,6 @@
   <head>
     <meta charset="UTF-8" />
     <title>Book Rating</title>
-
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="icon" href="assets/images/favicon.png" type="image/x-icon" />
     <style>
@@ -13,9 +12,8 @@
         background: #f3f4f6;
         font-family: "Segoe UI", sans-serif;
       }
-
       .container {
-        display: flex;
+        display: \itemflex;
         flex-direction: column;
         max-width: 80%;
         background: #fff;
@@ -24,35 +22,115 @@
         border-radius: 12px;
         box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
       }
+      #menu-btn {
+        position: absolute;
+        top: 15px;
+        left: 20px;
+        font-size: 24px;
+        cursor: pointer;
+      }
+      #side-panel {
+        position: fixed;
+        top: 0;
+        left: -250px;
+        width: 200px;
+        height: 100%;
+        background: #fff;
+        box-shadow: 2px 0 8px rgba(0, 0, 0, 0.2);
+        padding: 20px;
+        transition: left 0.3s ease;
+        z-index: 1000;
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      }
+      #side-panel.show {
+        left: 0;
+      }
+      .panel-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+        padding: 10px;
+        transition: all 0.3s ease; /* Smooth transition for all properties */
+        cursor: pointer; /* Indicate clickability */
+      }
 
+      .panel-header:hover {
+        background: rgba(3, 181, 178, 0.1); /* Subtle teal background */
+        /* transform: scale(1.02); Slight scale for dynamic effect */
+        color: #03b5b2; /* Match theme color for text */
+        border-bottom: 2px solid #03b5b2; /* Animated underline */
+      }
+      .panel-close {
+        cursor: pointer;
+        font-size: 20px;
+        font-weight: bold;
+        color: #444;
+      }
+      .glass {
+        backdrop-filter: blur(10px);
+        background: rgba(255, 255, 255, 0.2);
+        position: fixed;
+        inset: 0;
+        z-index: 2000;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .hidden {
+        display: none;
+      }
+      .overlay-content {
+        background: white;
+        padding: 60px 20px 20px;
+        border-radius: 12px;
+        max-height: 80vh;
+        overflow-y: auto;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        position: relative;
+        width: 80%;
+        min-width: 300px;
+      }
+      .overlay-header {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        background: white;
+        padding: 10px 20px;
+        border-bottom: 1px solid #ddd;
+        z-index: 2100;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+      .overlay-close {
+        cursor: pointer;
+        font-size: 20px;
+        font-weight: bold;
+        color: #444;
+      }
       .display {
         display: flex;
         flex-direction: row;
         justify-content: space-between;
       }
-
       h2 {
         text-align: center;
         color: #333;
         margin-bottom: 25px;
       }
-
       #book_info_container {
         display: flex;
         flex-direction: column;
         width: 50%;
-        /* background-color: red; */
-        overflow: none;
         margin-right: 20px;
       }
-
       label {
-        /* display: inline-block; */
         margin: 0 6px 5px;
         font-weight: 600;
         color: #333;
       }
-
       input[type="text"] {
         width: auto;
         padding: 10px;
@@ -61,7 +139,6 @@
         font-size: 14px;
         margin-bottom: 10px;
       }
-
       .toast {
         position: fixed;
         bottom: 20px;
@@ -80,7 +157,6 @@
         max-width: 300px;
         font-weight: 500;
       }
-
       .toast-close {
         margin-left: 10px;
         cursor: pointer;
@@ -88,25 +164,21 @@
         font-weight: bold;
         color: #444;
       }
-
       #ratingFields {
         display: flex;
         flex-direction: column;
       }
-
       .rating-group-title {
         display: flex;
         flex-direction: row;
         justify-content: space-between;
       }
-
       .rating-group-title label {
         display: flex;
         width: 100%;
         align-items: center;
         justify-content: flex-end;
         margin-right: 10px;
-        /* background-color: #ff2c2c; */
       }
       .rating-group {
         display: flex;
@@ -115,11 +187,9 @@
         align-items: center;
         margin-top: 6px;
       }
-
       .rating-group input[type="radio"] {
         display: none;
       }
-
       .rating-group label {
         background: #e5e7eb;
         padding: 8px 16px;
@@ -130,19 +200,14 @@
         flex: 1;
         margin: 0 4px;
       }
-
       .rating-group input[type="radio"]:hover + label {
         background: #0ad8d5;
         color: white;
-        /* font-weight: bold; */
       }
-
       .rating-group input[type="radio"]:checked + label {
         background: #03b5b2;
         color: white;
-        /* font-weight: bold; */
       }
-
       .buttons {
         display: flex;
         flex-direction: column;
@@ -152,7 +217,6 @@
         gap: 10px;
         margin-top: auto;
       }
-
       button {
         flex: 1;
         width: 100%;
@@ -165,29 +229,38 @@
         cursor: pointer;
         transition: background 0.3s ease;
       }
-
       button:hover {
         background: #029196;
       }
-
       #result {
         text-align: center;
         margin-top: 20px;
         font-weight: 500;
-        /* padding: 10px 8px; */
         background-color: rgb(213, 255, 213);
         color: green;
       }
-
+      .rating-entry {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-bottom: 1px solid #ddd;
+        padding: 10px 0;
+      }
+      .delete-icon {
+        cursor: pointer;
+        font-size: 16px;
+        color: #e53e3e;
+      }
+      .delete-icon:hover {
+        color: #c53030;
+      }
       @media (max-width: 480px) {
         .buttons {
           flex-direction: column;
         }
-
         .rating-group {
           flex-wrap: wrap;
         }
-
         .rating-group label {
           flex: 0 0 18%;
           margin-bottom: 6px;
@@ -197,12 +270,27 @@
   </head>
   <body>
     <div class="container">
+      <div id="menu-btn">⋮</div>
+      <div id="side-panel">
+        <div class="panel-header">
+          <span>My Ratings</span>
+          <span class="panel-close" onclick="closeSidePanel()">×</span>
+        </div>
+      </div>
+      <div id="overlay" class="glass hidden">
+        <div class="overlay-content">
+          <div class="overlay-header">
+            <h3>My Ratings</h3>
+            <span class="overlay-close" onclick="closeOverlay()">×</span>
+          </div>
+          <div id="ratings-list"></div>
+        </div>
+      </div>
       <h2>Book Rating</h2>
       <div class="display">
         <div id="book_info_container">
           <label>Book Name</label>
           <input type="text" id="book_name" placeholder="e.g., The Alchemist" />
-
           <label>Writer/Translator</label>
           <input
             type="text"
@@ -215,17 +303,13 @@
           >
             Average Rating: N/A
           </p>
-
           <div class="buttons">
             <button onclick="submitForm()">Submit Rating</button>
             <button onclick="downloadCSV()">Download CSV</button>
           </div>
         </div>
-
-        <!-- Ratings -->
         <div id="ratingFields"></div>
       </div>
-
       <div id="toast" class="toast">
         <span id="toast-text"></span>
         <span class="toast-close" onclick="hideToast()">×</span>
@@ -242,41 +326,32 @@
         "pacing",
         "enjoyment",
       ];
-
-      const allRatings = JSON.parse(localStorage.getItem("ratings")) || [];
-
+      let allRatings = JSON.parse(localStorage.getItem("ratings")) || [];
       function createRadioSection(id, labelText) {
         const section = document.createElement("div");
         section.className = "rating-group-title";
         const label = document.createElement("label");
         label.innerText = labelText;
         section.appendChild(label);
-
         const radioGroup = document.createElement("div");
         radioGroup.className = "rating-group";
-
         for (let i = 1; i <= 5; i++) {
           const radioId = `${id}_${i}`;
-
           const input = document.createElement("input");
           input.type = "radio";
           input.name = id;
           input.id = radioId;
           input.value = i;
-
           const radioLabel = document.createElement("label");
           radioLabel.setAttribute("for", radioId);
           radioLabel.innerText = i;
-
           radioGroup.appendChild(input);
           radioGroup.appendChild(radioLabel);
           input.addEventListener("change", updateLiveAverage);
         }
-
         section.appendChild(radioGroup);
         return section;
       }
-
       window.onload = function () {
         const container = document.getElementById("ratingFields");
         fields.forEach((field) => {
@@ -289,41 +364,33 @@
           );
         });
       };
-
       function getRadioValue(name) {
         const checked = document.querySelector(`input[name="${name}"]:checked`);
         return checked ? Number(checked.value) : 0;
       }
-
       function submitForm() {
         const book_name = document.getElementById("book_name").value.trim();
         const writer = document.getElementById("writer").value.trim();
-
         if (!book_name || !writer) {
           alert("Please fill in the book name and writer.");
           return;
         }
-
         const entry = {
           book_name,
           writer,
         };
-
         const scores = [];
         for (const field of fields) {
           const val = getRadioValue(field);
           entry[field] = val;
           scores.push(val);
         }
-
         entry.avg_rating = (
           scores.reduce((a, b) => a + b, 0) / scores.length
         ).toFixed(2);
         entry.date = new Date().toLocaleString();
-
         allRatings.push(entry);
         localStorage.setItem("ratings", JSON.stringify(allRatings));
-
         showToast("Rating saved!");
         document.getElementById("book_name").value = "";
         document.getElementById("writer").value = "";
@@ -331,23 +398,20 @@
           const radios = document.querySelectorAll(`input[name="${field}"]`);
           radios.forEach((r) => (r.checked = false));
         });
+        updateLiveAverage();
       }
-
       function downloadCSV() {
         if (allRatings.length === 0) {
           alert("No ratings to export.");
           return;
         }
-
         const headers = Object.keys(allRatings[0]);
         const rows = allRatings.map((obj) =>
           headers.map((h) => `"${obj[h]}"`).join(",")
         );
         const csvContent = [headers.join(","), ...rows].join("\n");
-
         const blob = new Blob([csvContent], { type: "text/csv" });
         const url = URL.createObjectURL(blob);
-
         const a = document.createElement("a");
         a.href = url;
         a.download = "book_ratings.csv";
@@ -371,18 +435,65 @@
       function showToast(message) {
         const toast = document.getElementById("toast");
         const toastText = document.getElementById("toast-text");
-
         toastText.innerText = message;
         toast.style.display = "flex";
-
-        // Auto-hide after 4 seconds
         setTimeout(() => {
           toast.style.display = "none";
         }, 4000);
       }
-
       function hideToast() {
         document.getElementById("toast").style.display = "none";
+      }
+      function closeSidePanel() {
+        document.getElementById("side-panel").classList.remove("show");
+      }
+      function deleteRating(index) {
+        allRatings.splice(index, 1);
+        localStorage.setItem("ratings", JSON.stringify(allRatings));
+        showToast("Rating deleted!");
+        // Refresh the ratings list
+        const container = document.getElementById("ratings-list");
+        container.innerHTML = allRatings
+          .map(
+            (entry, idx) => `
+              <div class="rating-entry">
+                <div>
+                  <strong>${entry.book_name}</strong> by ${entry.writer}<br/>
+                  ⭐ Average Rating: ${entry.avg_rating} <br/>
+                  <small>${entry.date}</small>
+                </div>
+                <span class="delete-icon" onclick="deleteRating(${idx})">🗑️</span>
+              </div>
+            `
+          )
+          .join("");
+      }
+      document.getElementById("menu-btn").addEventListener("click", () => {
+        document.getElementById("side-panel").classList.toggle("show");
+      });
+      document.querySelector(".panel-header").addEventListener("click", (e) => {
+        if (e.target.classList.contains("panel-close")) return;
+        document.getElementById("side-panel").classList.remove("show");
+        document.getElementById("overlay").classList.remove("hidden");
+        const data = JSON.parse(localStorage.getItem("ratings")) || [];
+        const container = document.getElementById("ratings-list");
+        container.innerHTML = data
+          .map(
+            (entry, idx) => `
+              <div class="rating-entry">
+                <div>
+                  <strong>${entry.book_name}</strong> by ${entry.writer}<br/>
+                  ⭐ Average Rating: ${entry.avg_rating} <br/>
+                  <small>${entry.date}</small>
+                </div>
+                <span class="delete-icon" onclick="deleteRating(${idx})">🗑️</span>
+              </div>
+            `
+          )
+          .join("");
+      });
+      function closeOverlay() {
+        document.getElementById("overlay").classList.add("hidden");
       }
     </script>
   </body>
