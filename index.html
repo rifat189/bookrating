@@ -3,105 +3,386 @@
   <head>
     <meta charset="UTF-8" />
     <title>Book Rating</title>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" href="assets/images/favicon.png" type="image/x-icon" />
     <style>
       body {
-        font-family: Arial;
-        padding: 20px;
-        max-width: 600px;
-        margin: auto;
+        margin: 0;
+        padding: 0;
+        background: #f3f4f6;
+        font-family: "Segoe UI", sans-serif;
       }
-      input,
-      button {
-        margin: 10px 0;
-        width: 100%;
-        padding: 8px;
+
+      .container {
+        display: flex;
+        flex-direction: column;
+        max-width: 80%;
+        background: #fff;
+        margin: 40px auto;
+        padding: 30px;
+        border-radius: 12px;
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
       }
+
+      .display {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+      }
+
+      h2 {
+        text-align: center;
+        color: #333;
+        margin-bottom: 25px;
+      }
+
+      #book_info_container {
+        display: flex;
+        flex-direction: column;
+        width: 50%;
+        /* background-color: red; */
+        overflow: none;
+        margin-right: 20px;
+      }
+
       label {
+        /* display: inline-block; */
+        margin: 0 6px 5px;
+        font-weight: 600;
+        color: #333;
+      }
+
+      input[type="text"] {
+        width: auto;
+        padding: 10px;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        font-size: 14px;
+        margin-bottom: 10px;
+      }
+
+      .toast {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        background: #d1fae5;
+        color: #065f46;
+        padding: 12px 16px;
+        border-left: 4px solid #10b981;
+        border-radius: 8px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        display: none;
+        align-items: center;
+        justify-content: space-between;
+        z-index: 9999;
+        min-width: 250px;
+        max-width: 300px;
+        font-weight: 500;
+      }
+
+      .toast-close {
+        margin-left: 10px;
+        cursor: pointer;
+        font-size: 16px;
         font-weight: bold;
+        color: #444;
+      }
+
+      #ratingFields {
+        display: flex;
+        flex-direction: column;
+      }
+
+      .rating-group-title {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+      }
+
+      .rating-group-title label {
+        display: flex;
+        width: 100%;
+        align-items: center;
+        justify-content: flex-end;
+        margin-right: 10px;
+        /* background-color: #ff2c2c; */
+      }
+      .rating-group {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        margin-top: 6px;
+      }
+
+      .rating-group input[type="radio"] {
+        display: none;
+      }
+
+      .rating-group label {
+        background: #e5e7eb;
+        padding: 8px 16px;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        text-align: center;
+        flex: 1;
+        margin: 0 4px;
+      }
+
+      .rating-group input[type="radio"]:hover + label {
+        background: #0ad8d5;
+        color: white;
+        /* font-weight: bold; */
+      }
+
+      .rating-group input[type="radio"]:checked + label {
+        background: #03b5b2;
+        color: white;
+        /* font-weight: bold; */
+      }
+
+      .buttons {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: space-between;
+        margin-top: 25px;
+        gap: 10px;
+        margin-top: auto;
+      }
+
+      button {
+        flex: 1;
+        width: 100%;
+        padding: 10px;
+        background: #03b5b2;
+        border: none;
+        border-radius: 8px;
+        color: #fff;
+        font-weight: 600;
+        cursor: pointer;
+        transition: background 0.3s ease;
+      }
+
+      button:hover {
+        background: #029196;
+      }
+
+      #result {
+        text-align: center;
+        margin-top: 20px;
+        font-weight: 500;
+        /* padding: 10px 8px; */
+        background-color: rgb(213, 255, 213);
+        color: green;
+      }
+
+      @media (max-width: 480px) {
+        .buttons {
+          flex-direction: column;
+        }
+
+        .rating-group {
+          flex-wrap: wrap;
+        }
+
+        .rating-group label {
+          flex: 0 0 18%;
+          margin-bottom: 6px;
+        }
       }
     </style>
   </head>
   <body>
-    <h2>Book Rating Form</h2>
+    <div class="container">
+      <h2>Book Rating</h2>
+      <div class="display">
+        <div id="book_info_container">
+          <label>Book Name</label>
+          <input type="text" id="book_name" placeholder="e.g., The Alchemist" />
 
-    <label>Book Name</label>
-    <input type="text" id="book_name" />
+          <label>Writer/Translator</label>
+          <input
+            type="text"
+            id="writer"
+            placeholder="e.g., Paulo Coelho / Translator"
+          />
+          <p
+            id="live_avg"
+            style="font-weight: 600; color: #444; margin: 6px 0 10px"
+          >
+            Average Rating: N/A
+          </p>
 
-    <label>Writer/Translator</label>
-    <input type="text" id="writer" />
+          <div class="buttons">
+            <button onclick="submitForm()">Submit Rating</button>
+            <button onclick="downloadCSV()">Download CSV</button>
+          </div>
+        </div>
 
-    <label>Story</label>
-    <input type="number" id="story" min="0" max="10" />
+        <!-- Ratings -->
+        <div id="ratingFields"></div>
+      </div>
 
-    <label>Characters</label>
-    <input type="number" id="characters" min="0" max="10" />
-
-    <label>Writing Style</label>
-    <input type="number" id="writing_style" min="0" max="10" />
-
-    <label>World Building</label>
-    <input type="number" id="world_building" min="0" max="10" />
-
-    <label>Emotion</label>
-    <input type="number" id="emotion" min="0" max="10" />
-
-    <label>Originality</label>
-    <input type="number" id="originality" min="0" max="10" />
-
-    <label>Pacing</label>
-    <input type="number" id="pacing" min="0" max="10" />
-
-    <label>Enjoyment</label>
-    <input type="number" id="enjoyment" min="0" max="10" />
-
-    <button onclick="submitForm()">Submit Rating</button>
-
-    <p id="result"></p>
-
+      <div id="toast" class="toast">
+        <span id="toast-text"></span>
+        <span class="toast-close" onclick="hideToast()">×</span>
+      </div>
+    </div>
     <script>
-      async function submitForm() {
-        const getVal = (id) => Number(document.getElementById(id).value) || 0;
+      const fields = [
+        "story",
+        "characters",
+        "writing_style",
+        "world_building",
+        "emotion",
+        "originality",
+        "pacing",
+        "enjoyment",
+      ];
 
-        const data = {
-          book_name: document.getElementById("book_name").value,
-          writer: document.getElementById("writer").value,
-          story: getVal("story"),
-          characters: getVal("characters"),
-          writing_style: getVal("writing_style"),
-          world_building: getVal("world_building"),
-          emotion: getVal("emotion"),
-          originality: getVal("originality"),
-          pacing: getVal("pacing"),
-          enjoyment: getVal("enjoyment"),
+      const allRatings = JSON.parse(localStorage.getItem("ratings")) || [];
+
+      function createRadioSection(id, labelText) {
+        const section = document.createElement("div");
+        section.className = "rating-group-title";
+        const label = document.createElement("label");
+        label.innerText = labelText;
+        section.appendChild(label);
+
+        const radioGroup = document.createElement("div");
+        radioGroup.className = "rating-group";
+
+        for (let i = 1; i <= 5; i++) {
+          const radioId = `${id}_${i}`;
+
+          const input = document.createElement("input");
+          input.type = "radio";
+          input.name = id;
+          input.id = radioId;
+          input.value = i;
+
+          const radioLabel = document.createElement("label");
+          radioLabel.setAttribute("for", radioId);
+          radioLabel.innerText = i;
+
+          radioGroup.appendChild(input);
+          radioGroup.appendChild(radioLabel);
+          input.addEventListener("change", updateLiveAverage);
+        }
+
+        section.appendChild(radioGroup);
+        return section;
+      }
+
+      window.onload = function () {
+        const container = document.getElementById("ratingFields");
+        fields.forEach((field) => {
+          const label = field.replace("_", " ");
+          container.appendChild(
+            createRadioSection(
+              field,
+              label.charAt(0).toUpperCase() + label.slice(1).replace("_", " ")
+            )
+          );
+        });
+      };
+
+      function getRadioValue(name) {
+        const checked = document.querySelector(`input[name="${name}"]:checked`);
+        return checked ? Number(checked.value) : 0;
+      }
+
+      function submitForm() {
+        const book_name = document.getElementById("book_name").value.trim();
+        const writer = document.getElementById("writer").value.trim();
+
+        if (!book_name || !writer) {
+          alert("Please fill in the book name and writer.");
+          return;
+        }
+
+        const entry = {
+          book_name,
+          writer,
         };
 
-        const scores = [
-          data.story,
-          data.characters,
-          data.writing_style,
-          data.world_building,
-          data.emotion,
-          data.originality,
-          data.pacing,
-          data.enjoyment,
-        ];
-        data.avg_rating = (
+        const scores = [];
+        for (const field of fields) {
+          const val = getRadioValue(field);
+          entry[field] = val;
+          scores.push(val);
+        }
+
+        entry.avg_rating = (
           scores.reduce((a, b) => a + b, 0) / scores.length
         ).toFixed(2);
+        entry.date = new Date().toLocaleString();
 
-        const webhookURL =
-          "https://script.google.com/macros/s/AKfycbyYa-PAh7nyRBe8sDW16LrvYjIdX7A6h4cQbUAH2Mb6mqg9Cb1XP_Q4tyBDAKMzjLFN/exec";
+        allRatings.push(entry);
+        localStorage.setItem("ratings", JSON.stringify(allRatings));
 
-        const response = await fetch(webhookURL, {
-          method: "POST",
-          body: JSON.stringify(data),
-          headers: {
-            "Content-Type": "application/json",
-          },
+        showToast("Rating saved!");
+        document.getElementById("book_name").value = "";
+        document.getElementById("writer").value = "";
+        fields.forEach((field) => {
+          const radios = document.querySelectorAll(`input[name="${field}"]`);
+          radios.forEach((r) => (r.checked = false));
         });
+      }
 
-        const text = await response.text();
-        document.getElementById("result").innerText = text;
+      function downloadCSV() {
+        if (allRatings.length === 0) {
+          alert("No ratings to export.");
+          return;
+        }
+
+        const headers = Object.keys(allRatings[0]);
+        const rows = allRatings.map((obj) =>
+          headers.map((h) => `"${obj[h]}"`).join(",")
+        );
+        const csvContent = [headers.join(","), ...rows].join("\n");
+
+        const blob = new Blob([csvContent], { type: "text/csv" });
+        const url = URL.createObjectURL(blob);
+
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = "book_ratings.csv";
+        a.click();
+      }
+      function updateLiveAverage() {
+        const scores = fields
+          .map((field) => getRadioValue(field))
+          .filter((v) => v > 0);
+        if (scores.length === 0) {
+          document.getElementById("live_avg").innerText = "Average Rating: N/A";
+          return;
+        }
+        const avg = (scores.reduce((a, b) => a + b, 0) / scores.length).toFixed(
+          2
+        );
+        document.getElementById(
+          "live_avg"
+        ).innerText = `Average Rating: ${avg}`;
+      }
+      function showToast(message) {
+        const toast = document.getElementById("toast");
+        const toastText = document.getElementById("toast-text");
+
+        toastText.innerText = message;
+        toast.style.display = "flex";
+
+        // Auto-hide after 4 seconds
+        setTimeout(() => {
+          toast.style.display = "none";
+        }, 4000);
+      }
+
+      function hideToast() {
+        document.getElementById("toast").style.display = "none";
       }
     </script>
   </body>
